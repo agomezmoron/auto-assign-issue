@@ -125,6 +125,10 @@ const runAction = async (octokit, context, parameters) => {
     // Get issue info from context
     let issueNumber = context.issue?.number || context.pull_request?.number;
     let isIssue = context.issue ? true : false;
+    console.log('isIssue: ' + isIssue);
+    if (isIssue) {
+        console.log('Context: ' + JSON.stringify(context));
+    }
     const author =
         context.issue?.user.login || context.pull_request?.user.login;
 
@@ -146,7 +150,9 @@ const runAction = async (octokit, context, parameters) => {
     // if this flag is false is because the context object didn't bring the issue one
     // But can be an issue coming from a card, that's why we need to check it asking the API
     if (!isIssue) {
+        console.log('Checking if it\'s an issue');
         isIssue = await isAnIssue(octokit, owner, repo, issueNumber);
+        console.log('isIssue: ' + isIssue);
     }
 
     // Check assignees and teams parameters
