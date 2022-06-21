@@ -1,0 +1,40 @@
+# This workflow is built to manage the triage support by using GH issues.
+
+name: Organize triage
+on:
+  issues:
+    types:
+      - reopened
+      - opened
+  pull_request_target:
+    types:
+      - reopened
+      - opened
+permissions:
+  repository-projects: write
+  issues: write
+
+jobs:
+  # For any opened or reopened issue, should be sent into Triage
+  send_to_triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: Debug
+        shell: bash
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "${{ env.TRIAGE_TEAM_STRING }}"
+          echo "$GITHUB_CONTEXT"
+      - name: Assign person for the triage
+        uses: pozil/auto-assign-issue@v1.7.2
+        with:
+          numOfAssignee: 1
+          assignees: "agomezmoron,jotamartos"
+          removePreviousAssignees: false
+          # teams: XXX
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
