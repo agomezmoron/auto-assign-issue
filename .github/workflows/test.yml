@@ -31,7 +31,7 @@ jobs:
           echo "${{ env.TRIAGE_TEAM_STRING }}"
           echo "$GITHUB_CONTEXT"
       - name: Assign person for the triage
-        uses: pozil/auto-assign-issue@v1.7.2
+        uses: agomezmoron/auto-assign-issue@testing
         with:
           numOfAssignee: 1
           assignees: "agomezmoron,jotamartos"
